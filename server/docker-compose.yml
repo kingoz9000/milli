@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  flask:
+    build: ./app
+    container_name: flask
+    expose:
+      - "5000"
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - flask
+
+volumes:
+  caddy_data:
+  caddy_config:
+
